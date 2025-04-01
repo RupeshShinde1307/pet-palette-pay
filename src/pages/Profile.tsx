@@ -1,5 +1,5 @@
 
-import { User, Settings, Bell, CreditCard, LogOut, HelpCircle, ChevronRight } from 'lucide-react';
+import { User, Settings, Bell, CreditCard, LogOut, HelpCircle, ChevronRight, Plus } from 'lucide-react';
 import Layout from '../components/Layout';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 
