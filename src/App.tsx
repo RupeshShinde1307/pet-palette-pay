@@ -6,6 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SplashScreen from "./pages/SplashScreen";
 import Home from "./pages/Home";
+import Search from "./pages/Search";
+import Transactions from "./pages/Transactions";
+import Wallet from "./pages/Wallet";
+import Profile from "./pages/Profile";
 import ServiceDetails from "./pages/ServiceDetails";
 import Payment from "./pages/Payment";
 import PaymentSuccess from "./pages/PaymentSuccess";
@@ -23,6 +27,10 @@ const App = () => (
         <Routes>
           <Route path="/" element={<SplashScreen />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/wallet" element={<Wallet />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/service/:id" element={<ServiceDetails />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
