@@ -189,26 +189,28 @@ const Payment = () => {
               
               <div className="mt-6 space-y-2">
                 <h3 className="text-sm font-medium text-gray-700 mb-2">Select Payment Method</h3>
-                <RadioGroup 
-                  defaultValue={selectedPayment}
-                  onValueChange={setSelectedPayment}
-                  className="space-y-2"
-                >
-                  {paymentOptions.map((option) => (
-                    <div 
-                      key={option.id}
-                      className="flex items-center p-3 border rounded-lg"
-                    >
-                      <RadioGroupItem value={option.id} id={option.id} className="mr-3" />
-                      <FormLabel htmlFor={option.id} className="flex-1 cursor-pointer">
-                        <div className="flex items-center">
-                          <option.icon size={16} className="mr-2" />
-                          <span>{option.name}</span>
-                        </div>
-                      </FormLabel>
-                    </div>
-                  ))}
-                </RadioGroup>
+                <Form {...form}>
+                  <RadioGroup 
+                    defaultValue={selectedPayment}
+                    onValueChange={setSelectedPayment}
+                    className="space-y-2"
+                  >
+                    {paymentOptions.map((option) => (
+                      <div 
+                        key={option.id}
+                        className="flex items-center p-3 border rounded-lg"
+                      >
+                        <RadioGroupItem value={option.id} id={option.id} className="mr-3" />
+                        <label htmlFor={option.id} className="flex-1 cursor-pointer">
+                          <div className="flex items-center">
+                            <option.icon size={16} className="mr-2" />
+                            <span>{option.name}</span>
+                          </div>
+                        </label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </Form>
               </div>
               
               <button 
