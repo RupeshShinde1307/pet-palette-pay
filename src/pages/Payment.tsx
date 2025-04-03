@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CreditCard, Wallet, Smartphone, PlusCircle, ChevronRight, Calculator } from 'lucide-react';
+import { ArrowLeft, CreditCard, Wallet, Smartphone, PlusCircle, ChevronRight, Calculator, IndianRupee } from 'lucide-react';
 import Layout from '../components/Layout';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
 import { Input } from "../components/ui/input";
@@ -25,8 +25,8 @@ const Payment = () => {
 
   const paymentOptions = [
     { id: 'card', name: 'Credit Card', icon: CreditCard, label: '**** 1234' },
-    { id: 'wallet', name: 'OSCPets Wallet', icon: Wallet, label: 'Balance: $120' },
-    { id: 'mobile', name: 'Mobile Payment', icon: Smartphone, label: 'Apple/Google Pay' },
+    { id: 'wallet', name: 'OSCPets Wallet', icon: Wallet, label: 'Balance: ₹9,500' },
+    { id: 'mobile', name: 'Mobile Payment', icon: Smartphone, label: 'UPI/GPay/PhonePe' },
   ];
 
   const handleAmountChange = (e) => {
@@ -64,20 +64,33 @@ const Payment = () => {
           <div className="border-b border-gray-100 pb-3 mb-3">
             <div className="flex justify-between mb-2">
               <span className="text-gray-600">Basic Grooming</span>
-              <span>$30.00</span>
+              <div className="flex items-center">
+                <IndianRupee size={14} className="mr-1" />
+                <span>1,500</span>
+              </div>
             </div>
             <div className="flex justify-between mb-2">
               <span className="text-gray-600">Spa Treatment</span>
-              <span>$75.00</span>
+              <div className="flex items-center">
+                <IndianRupee size={14} className="mr-1" />
+                <span>3,600</span>
+              </div>
             </div>
             <div className="flex justify-between text-sm text-green-600">
               <span>First Visit Discount</span>
-              <span>-$10.00</span>
+              <div className="flex items-center">
+                <span>-</span>
+                <IndianRupee size={14} className="mx-1" />
+                <span>500</span>
+              </div>
             </div>
           </div>
           <div className="flex justify-between font-semibold">
             <span>Total</span>
-            <span>$95.00</span>
+            <div className="flex items-center">
+              <IndianRupee size={16} className="mr-1" />
+              <span>4,600</span>
+            </div>
           </div>
           <button 
             className="mt-3 w-full py-2 flex items-center justify-center bg-primary/10 text-primary rounded-lg text-sm"
@@ -133,7 +146,7 @@ const Payment = () => {
           <div className="flex items-start">
             <Wallet size={20} className="text-primary mr-2 mt-0.5" />
             <div>
-              <p className="font-medium text-gray-800">Earn 95 Paw Points</p>
+              <p className="font-medium text-gray-800">Earn 460 Paw Points</p>
               <p className="text-sm text-gray-600">
                 Complete this payment and earn points for future discounts!
               </p>
@@ -145,7 +158,16 @@ const Payment = () => {
           className="pet-button paw-effect w-full py-4 flex items-center justify-center"
           onClick={() => navigate('/payment-success')}
         >
-          <span className="mr-2">Pay {isCalculatorOpen && amount > 0 ? `$${discountedAmount.toFixed(2)}` : '$95.00'}</span>
+          <span className="mr-2">Pay {isCalculatorOpen && amount > 0 ? 
+            <span className="flex items-center">
+              <IndianRupee size={16} className="mr-1" />
+              {discountedAmount.toFixed(2)}
+            </span> : 
+            <span className="flex items-center">
+              <IndianRupee size={16} className="mr-1" />
+              4,600
+            </span>}
+          </span>
           <ChevronRight size={18} />
         </button>
 
@@ -159,7 +181,7 @@ const Payment = () => {
             <div className="py-4">
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Enter Payment Amount
+                  Enter Payment Amount (₹)
                 </label>
                 <Input
                   type="number"
@@ -174,15 +196,25 @@ const Payment = () => {
                 <div className="bg-green-50 p-4 rounded-lg">
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-gray-600">Original Amount:</span>
-                    <span className="font-medium">${amount.toFixed(2)}</span>
+                    <div className="flex items-center font-medium">
+                      <IndianRupee size={14} className="mr-1" />
+                      <span>{amount.toFixed(2)}</span>
+                    </div>
                   </div>
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-green-600">Discount (10%):</span>
-                    <span className="font-medium text-green-600">-${(amount * 0.1).toFixed(2)}</span>
+                    <div className="flex items-center font-medium text-green-600">
+                      <span>-</span>
+                      <IndianRupee size={14} className="mx-1" />
+                      <span>{(amount * 0.1).toFixed(2)}</span>
+                    </div>
                   </div>
                   <div className="flex justify-between font-semibold mt-2 pt-2 border-t border-green-200">
                     <span>You Pay:</span>
-                    <span>${discountedAmount.toFixed(2)}</span>
+                    <div className="flex items-center">
+                      <IndianRupee size={14} className="mr-1" />
+                      <span>{discountedAmount.toFixed(2)}</span>
+                    </div>
                   </div>
                 </div>
               )}

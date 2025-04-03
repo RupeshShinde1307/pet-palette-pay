@@ -34,6 +34,7 @@ const Home = () => {
       category: 'Grooming',
       rating: 4.8,
       location: '2.5 miles away',
+      price: 2500,
     },
     {
       id: '2',
@@ -42,6 +43,7 @@ const Home = () => {
       category: 'Veterinary',
       rating: 4.9,
       location: '1.8 miles away',
+      price: 3500,
     },
     {
       id: '3',
@@ -50,6 +52,7 @@ const Home = () => {
       category: 'Pet Shop',
       rating: 4.6,
       location: '3.2 miles away',
+      price: 1800,
     },
   ];
 

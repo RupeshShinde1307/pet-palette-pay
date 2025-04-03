@@ -1,14 +1,16 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Star, MapPin, Clock, Phone, Award, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Star, MapPin, Clock, Phone, Award, ChevronRight, IndianRupee } from 'lucide-react';
 import Layout from '../components/Layout';
 import PawLoader from '../components/PawLoader';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
 
 const ServiceDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [mapOpen, setMapOpen] = useState(false);
   
   useEffect(() => {
     // Simulate loading
@@ -18,6 +20,11 @@ const ServiceDetails = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  const handleCall = () => {
+    // Use tel: protocol to initiate a call
+    window.location.href = `tel:+912345678901`;
+  };
 
   if (loading) {
     return <PawLoader />;
@@ -37,12 +44,13 @@ const ServiceDetails = () => {
     reviewCount: id === '1' ? 128 : id === '2' ? 156 : 98,
     location: id === '1' ? '2.5 miles away' : id === '2' ? '1.8 miles away' : '3.2 miles away',
     address: '123 Pet Avenue, Pet City',
-    phone: '+1 234 567 8901',
+    phone: '+91 234 567 8901',
     hours: '9:00 AM - 6:00 PM',
+    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.6175453526224!2d-73.98657412412566!3d40.748447537538435!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b30eac9f%3A0xaca05ca48ab0c23!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1704887880561!5m2!1sen!2sus',
     services: [
-      { name: 'Basic Grooming', price: 30 },
-      { name: 'Premium Package', price: 50 },
-      { name: 'Spa Treatment', price: 75 },
+      { name: 'Basic Grooming', price: 1500 },
+      { name: 'Premium Package', price: 2500 },
+      { name: 'Spa Treatment', price: 3600 },
     ],
     offers: [
       '10% off on first visit',
@@ -92,11 +100,17 @@ const ServiceDetails = () => {
           </div>
           
           <div className="flex items-center mb-6">
-            <button className="flex items-center justify-center bg-primary/10 text-primary rounded-full px-4 py-2 text-sm mr-3">
+            <button 
+              className="flex items-center justify-center bg-primary/10 text-primary rounded-full px-4 py-2 text-sm mr-3"
+              onClick={handleCall}
+            >
               <Phone size={16} className="mr-1" />
               Call
             </button>
-            <button className="flex-1 bg-secondary text-gray-700 rounded-full px-4 py-2 text-sm font-medium">
+            <button 
+              className="flex-1 bg-secondary text-gray-700 rounded-full px-4 py-2 text-sm font-medium"
+              onClick={() => setMapOpen(true)}
+            >
               Get Directions
             </button>
           </div>
@@ -107,7 +121,10 @@ const ServiceDetails = () => {
               {service.services.map((item, index) => (
                 <div key={index} className="flex justify-between items-center p-3">
                   <span className="text-gray-700">{item.name}</span>
-                  <span className="font-medium">${item.price}</span>
+                  <div className="flex items-center font-medium">
+                    <IndianRupee size={14} className="mr-1" />
+                    <span>{item.price}</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -137,6 +154,27 @@ const ServiceDetails = () => {
           </button>
         </div>
       </div>
+
+      {/* Google Maps Dialog */}
+      <Dialog open={mapOpen} onOpenChange={setMapOpen}>
+        <DialogContent className="sm:max-w-md h-[70vh]">
+          <DialogHeader>
+            <DialogTitle>Directions to {service.name}</DialogTitle>
+          </DialogHeader>
+          <div className="h-full w-full">
+            <iframe
+              src={service.mapUrl}
+              width="100%"
+              height="100%"
+              style={{ border: 0, borderRadius: '0.5rem' }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="h-[50vh]"
+            ></iframe>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };

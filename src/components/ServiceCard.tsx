@@ -1,5 +1,5 @@
 
-import { Star, MapPin } from 'lucide-react';
+import { Star, MapPin, IndianRupee } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ServiceCardProps {
@@ -9,9 +9,10 @@ interface ServiceCardProps {
   category: string;
   rating: number;
   location: string;
+  price?: number;
 }
 
-const ServiceCard = ({ id, name, image, category, rating, location }: ServiceCardProps) => {
+const ServiceCard = ({ id, name, image, category, rating, location, price }: ServiceCardProps) => {
   return (
     <Link to={`/service/${id}`}>
       <div className="bg-white rounded-2xl overflow-hidden card-shadow mb-4">
@@ -33,6 +34,12 @@ const ServiceCard = ({ id, name, image, category, rating, location }: ServiceCar
             <MapPin size={14} className="mr-1" />
             <p className="text-xs">{location}</p>
           </div>
+          {price && (
+            <div className="flex items-center mt-2 text-primary font-medium">
+              <IndianRupee size={14} className="mr-1" />
+              <p className="text-sm">{price}</p>
+            </div>
+          )}
         </div>
       </div>
     </Link>
