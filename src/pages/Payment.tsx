@@ -84,52 +84,24 @@ const Payment = () => {
             src="/lovable-uploads/673ae4f3-96af-4735-b06d-e5379afb05d1.png"
             alt="OSCPets Pay Logo" 
             className="h-16"
-            onClick={() => setIsCalculatorOpen(true)}
           />
         </div>
         
+        {/* Custom Payment Section */}
         <div className="bg-white rounded-2xl shadow-sm p-4 mb-5">
-          <h2 className="font-semibold text-gray-800 mb-3">Order Summary</h2>
-          <div className="border-b border-gray-100 pb-3 mb-3">
-            <div className="flex justify-between mb-2">
-              <span className="text-gray-600">Basic Grooming</span>
-              <div className="flex items-center">
-                <IndianRupee size={14} className="mr-1" />
-                <span>1,500</span>
-              </div>
-            </div>
-            <div className="flex justify-between mb-2">
-              <span className="text-gray-600">Spa Treatment</span>
-              <div className="flex items-center">
-                <IndianRupee size={14} className="mr-1" />
-                <span>3,600</span>
-              </div>
-            </div>
-            <div className="flex justify-between text-sm text-green-600">
-              <span>First Visit Discount</span>
-              <div className="flex items-center">
-                <span>-</span>
-                <IndianRupee size={14} className="mx-1" />
-                <span>500</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between font-semibold">
-            <span>Total</span>
-            <div className="flex items-center">
-              <IndianRupee size={16} className="mr-1" />
-              <span>4,600</span>
-            </div>
-          </div>
+          <h2 className="font-semibold text-gray-800 mb-3">Custom Payment</h2>
+          <p className="text-sm text-gray-600 mb-4">
+            Enter a custom payment amount and get 10% discount on your transaction.
+          </p>
           <button 
-            className="mt-3 w-full py-2 flex items-center justify-center bg-primary/10 text-primary rounded-lg text-sm"
+            className="w-full py-2 flex items-center justify-center bg-primary/10 text-primary rounded-lg text-sm"
             onClick={() => {
               setIsCalculatorOpen(true);
               setIsConfirmed(false);
             }}
           >
             <Calculator size={16} className="mr-2" />
-            Custom Payment Amount
+            Enter Payment Amount
           </button>
         </div>
         
@@ -214,7 +186,7 @@ const Payment = () => {
           <div className="flex items-start">
             <Wallet size={20} className="text-primary mr-2 mt-0.5" />
             <div>
-              <p className="font-medium text-gray-800">Earn 460 Paw Points</p>
+              <p className="font-medium text-gray-800">Earn Paw Points on Your Payment</p>
               <p className="text-sm text-gray-600">
                 Complete this payment and earn points for future discounts!
               </p>
@@ -224,18 +196,22 @@ const Payment = () => {
         
         <button 
           className="pet-button paw-effect w-full py-4 flex items-center justify-center"
-          onClick={() => navigate('/payment-success')}
+          onClick={() => {
+            if (isConfirmed && amount > 0) {
+              handlePayWithOSCPets();
+            } else {
+              setIsCalculatorOpen(true);
+            }
+          }}
         >
-          <span className="mr-2">Pay {isConfirmed && amount > 0 ? 
-            <span className="flex items-center">
-              <IndianRupee size={16} className="mr-1" />
+          {isConfirmed && amount > 0 ? (
+            <span className="mr-2 flex items-center">
+              Pay <IndianRupee size={16} className="mx-1" />
               {discountedAmount.toFixed(2)}
-            </span> : 
-            <span className="flex items-center">
-              <IndianRupee size={16} className="mr-1" />
-              4,600
-            </span>}
-          </span>
+            </span>
+          ) : (
+            <span className="mr-2">Enter Payment Amount</span>
+          )}
           <ChevronRight size={18} />
         </button>
 
