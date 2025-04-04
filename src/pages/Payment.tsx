@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CreditCard, Wallet, Smartphone, PlusCircle, ChevronRight, Calculator, IndianRupee } from 'lucide-react';
 import Layout from '../components/Layout';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../components/ui/dialog";
 import { Input } from "../components/ui/input";
 import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../components/ui/form";
 import { useForm } from "react-hook-form";
+import { Button } from "../components/ui/button";
+import { toast } from "../hooks/use-toast";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ const Payment = () => {
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [amount, setAmount] = useState(0);
   const [discountedAmount, setDiscountedAmount] = useState(0);
+  const [isConfirmed, setIsConfirmed] = useState(false);
   
   const form = useForm({
     defaultValues: {
@@ -34,6 +37,32 @@ const Payment = () => {
     setAmount(value);
     // Calculate 10% discount
     setDiscountedAmount(value * 0.9);
+  };
+
+  const handleConfirm = () => {
+    if (amount <= 0) {
+      toast({
+        title: "Invalid amount",
+        description: "Please enter a valid payment amount",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setIsConfirmed(true);
+    setIsCalculatorOpen(false);
+  };
+
+  const handlePayWithOSCPets = () => {
+    toast({
+      title: "Processing payment",
+      description: `Processing ₹${discountedAmount.toFixed(2)} with OSCPets`,
+    });
+    
+    // Simulate payment processing
+    setTimeout(() => {
+      navigate('/payment-success');
+    }, 1500);
   };
 
   return (
@@ -94,12 +123,51 @@ const Payment = () => {
           </div>
           <button 
             className="mt-3 w-full py-2 flex items-center justify-center bg-primary/10 text-primary rounded-lg text-sm"
-            onClick={() => setIsCalculatorOpen(true)}
+            onClick={() => {
+              setIsCalculatorOpen(true);
+              setIsConfirmed(false);
+            }}
           >
             <Calculator size={16} className="mr-2" />
             Custom Payment Amount
           </button>
         </div>
+        
+        {/* Custom Payment Confirmed Box */}
+        {isConfirmed && amount > 0 && (
+          <div className="bg-green-50 rounded-2xl shadow-sm p-4 mb-5">
+            <h2 className="font-semibold text-gray-800 mb-3">Custom Payment</h2>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-gray-600">Original Amount</span>
+              <div className="flex items-center">
+                <IndianRupee size={14} className="mr-1" />
+                <span>{amount.toFixed(2)}</span>
+              </div>
+            </div>
+            <div className="flex justify-between items-center mb-2 text-green-600">
+              <span>Discount (10%)</span>
+              <div className="flex items-center">
+                <span>-</span>
+                <IndianRupee size={14} className="mx-1" />
+                <span>{(amount * 0.1).toFixed(2)}</span>
+              </div>
+            </div>
+            <div className="flex justify-between items-center font-semibold border-t border-green-200 pt-2 mt-2">
+              <span>Final Amount</span>
+              <div className="flex items-center">
+                <IndianRupee size={14} className="mr-1" />
+                <span>{discountedAmount.toFixed(2)}</span>
+              </div>
+            </div>
+            <Button 
+              className="mt-3 w-full bg-green-600 hover:bg-green-700"
+              onClick={handlePayWithOSCPets}
+            >
+              <Wallet size={16} className="mr-2" />
+              Pay with OSCPets
+            </Button>
+          </div>
+        )}
         
         <div className="bg-white rounded-2xl shadow-sm p-4 mb-6">
           <h2 className="font-semibold text-gray-800 mb-3">Payment Method</h2>
@@ -158,7 +226,7 @@ const Payment = () => {
           className="pet-button paw-effect w-full py-4 flex items-center justify-center"
           onClick={() => navigate('/payment-success')}
         >
-          <span className="mr-2">Pay {isCalculatorOpen && amount > 0 ? 
+          <span className="mr-2">Pay {isConfirmed && amount > 0 ? 
             <span className="flex items-center">
               <IndianRupee size={16} className="mr-1" />
               {discountedAmount.toFixed(2)}
@@ -176,6 +244,9 @@ const Payment = () => {
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle className="text-center">Custom Payment Amount</DialogTitle>
+              <DialogDescription className="text-center text-sm text-gray-500">
+                Enter your payment amount below to get a 10% discount
+              </DialogDescription>
             </DialogHeader>
             
             <div className="py-4">
@@ -247,7 +318,7 @@ const Payment = () => {
               
               <button 
                 className="mt-6 w-full bg-primary text-white py-3 rounded-lg font-medium"
-                onClick={() => setIsCalculatorOpen(false)}
+                onClick={handleConfirm}
               >
                 Confirm
               </button>
