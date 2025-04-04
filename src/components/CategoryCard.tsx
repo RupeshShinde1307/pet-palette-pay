@@ -4,13 +4,18 @@ import { ReactNode } from 'react';
 interface CategoryCardProps {
   icon: ReactNode;
   name: string;
+  active?: boolean;
 }
 
-const CategoryCard = ({ icon, name }: CategoryCardProps) => {
+const CategoryCard = ({ icon, name, active = false }: CategoryCardProps) => {
   return (
-    <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
-      <div className="pet-category-icon text-primary">{icon}</div>
-      <span className="text-sm font-medium text-gray-700">{name}</span>
+    <div className={`flex flex-col items-center justify-center p-3 rounded-xl 
+      ${active 
+        ? 'bg-primary text-white shadow-md' 
+        : 'bg-white text-gray-700 shadow-sm hover:shadow-md'
+      } transition-all duration-300`}>
+      <div className={`${active ? 'text-white' : 'text-primary'} mb-1`}>{icon}</div>
+      <span className="text-xs font-medium">{name}</span>
     </div>
   );
 };
