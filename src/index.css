@@ -77,32 +77,15 @@
   body {
     @apply bg-background text-foreground font-poppins;
   }
-  
-  /* Dark mode scrollbar */
-  .dark ::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  .dark ::-webkit-scrollbar-track {
-    @apply bg-gray-800;
-  }
-  
-  .dark ::-webkit-scrollbar-thumb {
-    @apply bg-gray-600 rounded-full;
-  }
-  
-  .dark ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-500;
-  }
 }
 
 @layer components {
   .card-shadow {
-    @apply shadow-lg hover:shadow-xl transition-shadow duration-300 dark:shadow-gray-900/30;
+    @apply shadow-lg hover:shadow-xl transition-shadow duration-300;
   }
   
   .pet-category-icon {
-    @apply w-12 h-12 mx-auto mb-2 p-2 rounded-full bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-900/30;
+    @apply w-12 h-12 mx-auto mb-2 p-2 rounded-full bg-white shadow-md;
   }
   
   .pet-button {
